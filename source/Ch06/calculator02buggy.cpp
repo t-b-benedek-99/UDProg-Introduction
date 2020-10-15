@@ -172,7 +172,7 @@ double expression()
             t = ts.get();
             break;
         case '-':
-            left += term();    // evaluate Term and subtract
+            left -= term();    // evaluate Term and subtract
             t = ts.get();
             break;
         default:
@@ -184,8 +184,13 @@ double expression()
 
 //------------------------------------------------------------------------------
 
-int main()
-try
+void greet_user()
+{
+	cout << "Welcome to our simple calculator." << endl
+		<<"Please enter expressions using floating-point numbers." << endl;
+}
+
+void calculate()
 {
 	double val = expression();
 	
@@ -200,6 +205,13 @@ try
         //val = expression();
     }
     keep_window_open();
+}
+
+int main()
+try
+{
+	greet_user();	
+	calculate();
 }
 catch (exception& e) {
     cerr << "error: " << e.what() << '\n';
