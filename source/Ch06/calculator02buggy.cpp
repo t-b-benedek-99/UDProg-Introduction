@@ -84,13 +84,13 @@ Token Token_stream::get()
     case '5': case '6': case '7': case '9':
     {
         cin.putback(ch);         // put digit back into the input stream
-        double val;
+        double val = 0; // try to initialize a value
         cin >> val;              // read a floating-point number
         return Token('8', val);   // let '8' represent "a number"
     }
     default:
         error("Bad token");
-        return -1;
+        return 1;
     }
 }
 
@@ -120,12 +120,13 @@ double primary()
         return t.value;  // return the number's value
 	case '+':
 		return primary();
-		break;
 	case '-':
 		return - primary();
+    case 'x':
+        break;
     default:
         error("primary expected");
-        return -1;
+        return 0;
     }
 }
 
@@ -142,6 +143,7 @@ double term()
         case '*':
             left *= primary();
             t = ts.get();
+            break;
         case '/':
         {
             double d = primary();
@@ -190,20 +192,23 @@ void greet_user()
 		<<"Please enter expressions using floating-point numbers." << endl;
 }
 
+
+
 void calculate()
 {
-	double val = expression();
+    double val = expression();
 	
     while (cin) {
         Token t = ts.get();
 
-        if (t.kind == 'x') break; // 'x' for quit
+        if (t.kind == 'x') return; // 'x' for quit
         if (t.kind == '=')        // '=' for "print now"
             cout << "=" << val << '\n';
         else
             ts.putback(t);
-        //val = expression();
-    }
+
+        val = expression();
+    }    
     keep_window_open();
 }
 
@@ -212,6 +217,8 @@ try
 {
 	greet_user();	
 	calculate();
+
+    return 0;
 }
 catch (exception& e) {
     cerr << "error: " << e.what() << '\n';
