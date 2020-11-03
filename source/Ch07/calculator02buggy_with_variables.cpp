@@ -107,7 +107,7 @@ Token Token_stream::get()
     switch (ch) {
         case print:    // for "print"
         case quit:    // for "quit"
-        case '(': case ')': case '+': case '-': case '*': case '/': case '%': case '=':
+        case '(': case ')': case '+': case '-': case '*': case '/': case '%': case '=': case ',':
             return Token(ch);        // let each character represent itself
         case '.':
         case '0': case '1': case '2': case '3': case '4':
@@ -156,21 +156,21 @@ void Token_stream::ignore(char c)
 Token_stream ts;        // provides get() and putback() 
 
 double calc_sqrt(){
-
-    char ch;
-    if(cin.get(ch) && ch != '(') error("'(' expected");
-    cin.putback(ch);
+    Token t;
+    t = ts.get();
+    if(t.kind != '(') error("'(' expected");
+    ts.putback(t);
     double d = expression();
     if (d < 0) error("sqrt: negative value");
     return sqrt(d);
 }
 
 double pow_to(){
-
     char ch;
     if(cin.get(ch) && ch != '(') error("'(' expected");
-    string first_value = "";
-    string second_value = "";
+
+    string first_value;
+    string second_value;
 
     while(cin.get(ch) && ch != ','){
         first_value += ch;
@@ -179,6 +179,7 @@ double pow_to(){
     while(cin.get(ch) && ch != ')'){
         second_value += ch;
     }
+    
 
     double d = pow(stod(first_value), stod(second_value));
 
