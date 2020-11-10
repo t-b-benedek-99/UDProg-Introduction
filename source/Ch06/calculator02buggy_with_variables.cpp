@@ -213,7 +213,7 @@ double pow_to(){
     string first_value = "";
     string second_value = "";
 
-    while(cin.get(ch) && ch != '|'){
+    while(cin.get(ch) && ch != ','){
         first_value += ch;
     }
 
